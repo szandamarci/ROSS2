@@ -14,6 +14,8 @@ def generate_launch_description():
     ros_gz_sim = get_package_share_directory('ros_gz_sim')
     pkg_turtlebot3_gazebo = get_package_share_directory('turtlebot3_gazebo')
     pkg_turtlebot3_description = get_package_share_directory('turtlebot3_description')
+    pkg_turtlebot3_slam_toolbox = get_package_share_directory('turtlebot3_slam_toolbox')
+
 
     # Config
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
@@ -50,6 +52,9 @@ def generate_launch_description():
         }.items()
     )
 
+    
+
+
     # URDF description
     urdf_file = os.path.join(pkg_turtlebot3_description, 'urdf', 'turtlebot3_burger.urdf.xacro')
     robot_description = Command(['xacro ', urdf_file])
@@ -79,7 +84,18 @@ def generate_launch_description():
                 'robot_namespace': TextSubstitution(text='tb3_1'),
                 'robot_name': TextSubstitution(text='tb3_1')
             }.items()
-        )
+        ),
+
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(pkg_turtlebot3_slam_toolbox, 'launch', 'slam_toolbox.launch.py'),
+            ),
+            launch_arguments={
+                'use_sim_time': use_sim_time,
+                'namespace': 'tb3_1'
+            }.items()
+)
+    
     ])
 
     # === Robot 2 ===
@@ -136,13 +152,13 @@ def generate_launch_description():
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
-            arguments=['2', '0', '0', '0', '0', '0', 'world', 'tb3_2/odom'],
+            arguments=['2', '0', '0', '0', '0', '0', 'map', 'tb3_2/odom'],
             output='screen'
         ),
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
-            arguments=['0', '0', '0', '0', '0', '0', 'world', 'tb3_1/odom'],
+            arguments=['0', '0', '0', '0', '0', '0', 'map', 'tb3_1/odom'],
             output='screen'
         )
     ])
