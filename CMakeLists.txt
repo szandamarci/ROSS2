@@ -69,7 +69,7 @@ install(TARGETS ${EXEC_NAME}
   DESTINATION lib/${PROJECT_NAME}
 )
 
-install(DIRECTORY launch maps models params rviz urdf worlds
+install(DIRECTORY launch maps models params rviz urdf worlds config
   DESTINATION share/${PROJECT_NAME}/
 )
 

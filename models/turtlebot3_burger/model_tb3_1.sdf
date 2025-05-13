@@ -128,7 +128,7 @@
         <pose>-0.032 0 0.171 0 0 0</pose>
         <update_rate>5</update_rate>
         <topic>scan</topic>
-        <gz_frame_id>base_scan</gz_frame_id>
+        <gz_frame_id>tb3_1/scan</gz_frame_id>
         <lidar>
           <scan>
             <horizontal>
@@ -154,6 +154,7 @@
             <mean>0.0</mean>
             <stddev>0.01</stddev>
           </noise>
+          <frame_id>tb3_1/scan</frame_id>
         </lidar>
       </sensor>
     </link>

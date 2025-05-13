@@ -27,14 +27,14 @@ def generate_launch_description():
         os.path.join(pkg_turtlebot3_gazebo, 'models')
     )
 
-    rviz_node = Node(
-        package='rviz2',
-        executable='rviz2',
-        name='rviz2',
-        output='screen',
-        arguments=['-d', os.path.join(pkg_turtlebot3_gazebo, 'rviz', 'tb3_gazebo_upd.rviz')],
-        parameters=[{'use_sim_time': use_sim_time}]
-    )
+    # rviz_node = Node(
+    #     package='rviz2',
+    #     executable='rviz2',
+    #     name='rviz2',
+    #     output='screen',
+    #     arguments=['-d', os.path.join(pkg_turtlebot3_gazebo, 'rviz', 'tb3_gazebo_upd.rviz')],
+    #     parameters=[{'use_sim_time': use_sim_time}]
+    # )
 
     # Launch Gazebo
     gazebo_cmd = IncludeLaunchDescription(
@@ -88,7 +88,7 @@ def generate_launch_description():
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                os.path.join(pkg_turtlebot3_slam_toolbox, 'launch', 'slam_toolbox.launch.py'),
+                os.path.join(pkg_turtlebot3_gazebo, 'launch', 'multirobot_mapping_slam.launch.py'),
             ),
             launch_arguments={
                 'use_sim_time': use_sim_time,
@@ -148,19 +148,19 @@ def generate_launch_description():
             ],
             output='screen'
         ),
-        # Create a common world frame
-        Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            arguments=['2', '0', '0', '0', '0', '0', 'map', 'tb3_2/odom'],
-            output='screen'
-        ),
-        Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            arguments=['0', '0', '0', '0', '0', '0', 'map', 'tb3_1/odom'],
-            output='screen'
-        )
+        # # Create a common world frame
+        # Node(
+        #     package='tf2_ros',
+        #     executable='static_transform_publisher',
+        #     arguments=['2', '0', '0', '0', '0', '0', 'map', 'tb3_2/odom'],
+        #     output='screen'
+        # ),
+        # Node(
+        #     package='tf2_ros',
+        #     executable='static_transform_publisher',
+        #     arguments=['0', '0', '0', '0', '0', '0', 'map', 'tb3_1/odom'],
+        #     output='screen'
+        # )
     ])
 
     # Assemble launch description
@@ -170,6 +170,6 @@ def generate_launch_description():
     ld.add_action(odom_bridges)
     ld.add_action(tb3_1)
     ld.add_action(tb3_2)
-    ld.add_action(rviz_node)
+    #ld.add_action(rviz_node)
     
     return ld
