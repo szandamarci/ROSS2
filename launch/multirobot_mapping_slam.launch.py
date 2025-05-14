@@ -80,7 +80,7 @@ def generate_launch_description():
             executable='static_transform_publisher',
             name='static_transform_2',
             namespace=name_2,
-            arguments=['0.5', '1.0', '0.0', '0.0', '0.0', '0.0', '1.0', 'world', 'tb3_2/map'],
+            arguments=['2.0', '0.0', '0.0', '0.0', '0.0', '0.0', '1.0', 'world', 'tb3_2/map'],
     	    parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}])
 
     interactive_marker_twist_server_node_1 = Node(

@@ -148,19 +148,19 @@ def generate_launch_description():
             ],
             output='screen'
         ),
-        # # Create a common world frame
-        # Node(
-        #     package='tf2_ros',
-        #     executable='static_transform_publisher',
-        #     arguments=['2', '0', '0', '0', '0', '0', 'map', 'tb3_2/odom'],
-        #     output='screen'
-        # ),
-        # Node(
-        #     package='tf2_ros',
-        #     executable='static_transform_publisher',
-        #     arguments=['0', '0', '0', '0', '0', '0', 'map', 'tb3_1/odom'],
-        #     output='screen'
-        # )
+        # Create a common world frame
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'tb3_1/map', 'tb3_2/odom'],
+            output='screen'
+        ),
+        Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'tb3_2/map', 'tb3_1/odom'],
+            output='screen'
+        )
     ])
 
     # Assemble launch description
