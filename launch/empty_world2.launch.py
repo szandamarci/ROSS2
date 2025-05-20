@@ -59,6 +59,12 @@ def generate_launch_description():
     urdf_file = os.path.join(pkg_turtlebot3_description, 'urdf', 'turtlebot3_burger.urdf.xacro')
     robot_description = Command(['xacro ', urdf_file])
 
+
+    print("###################################")
+    print(os.path.join(
+                pkg_turtlebot3_gazebo, 'config', 'ekf_tb3_1.yaml'))
+    print("#####################################")
+
     # === Robot 1 ===
     tb3_1 = GroupAction([
         # State publisher
@@ -73,6 +79,22 @@ def generate_launch_description():
             }],
             output='screen'
         ),
+        
+        
+        Node(
+            package='robot_localization',
+            executable='ekf_node',
+            namespace='tb3_1',
+            name='ekf_filter_node',
+            output='screen',
+            arguments=['--ros-args', '--log-level', 'DEBUG'],
+            parameters=[os.path.join(
+                pkg_turtlebot3_gazebo, 'config', 'ekf_tb3_1.yaml'),
+                {'use_sim_time': use_sim_time}
+            ]
+        ),
+        
+
         # Spawner
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
@@ -111,6 +133,19 @@ def generate_launch_description():
             }],
             output='screen'
         ),
+        
+        Node(
+            package='robot_localization',
+            executable='ekf_node',
+            namespace='tb3_2',
+            name='ekf_filter_node',
+            output='screen',
+            parameters=[os.path.join(
+                pkg_turtlebot3_gazebo, 'config', 'ekf_tb3_2.yaml'),
+                {'use_sim_time': use_sim_time}
+            ]
+        ),
+
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 os.path.join(launch_file_dir, 'spawn_tb3_2.launch.py')
@@ -123,45 +158,39 @@ def generate_launch_description():
             }.items()
         )
     ])
-
+    
     # Odometry bridges - now including pose information
     odom_bridges = GroupAction([
-        # Bridge for robot 1 (odom and pose)
+        
+        # Node to bridge messages like /cmd_vel and /odom
         Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
-            arguments=[
-                '/tb3_1/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
-                '/tb3_1/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist',
-                '/tb3_1/pose@geometry_msgs/msg/PoseStamped[gz.msgs.Pose'
-            ],
-            output='screen'
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=[
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"
+        ],
+        output="screen",
+        parameters=[
+            {'use_sim_time': True},
+        ]
         ),
-        # Bridge for robot 2 (odom and pose)
-        Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
-            arguments=[
-                '/tb3_2/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
-                '/tb3_2/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist',
-                '/tb3_2/pose@geometry_msgs/msg/PoseStamped[gz.msgs.Pose'
-            ],
-            output='screen'
-        ),
+        
+        
         # Create a common world frame
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
-            arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'tb3_1/map', 'tb3_2/odom'],
+            arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'tb3_1/map', 'tb3_1/odom'],
             output='screen'
         ),
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
-            arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'tb3_2/map', 'tb3_1/odom'],
+            arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'tb3_2/map', 'tb3_2/odom'],
             output='screen'
         )
     ])
+    
 
     # Assemble launch description
     ld = LaunchDescription()
@@ -169,7 +198,7 @@ def generate_launch_description():
     ld.add_action(gazebo_cmd)
     ld.add_action(odom_bridges)
     ld.add_action(tb3_1)
-    ld.add_action(tb3_2)
+    #ld.add_action(tb3_2)
     #ld.add_action(rviz_node)
     
     return ld
