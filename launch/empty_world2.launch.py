@@ -87,7 +87,6 @@ def generate_launch_description():
             namespace='tb3_1',
             name='ekf_filter_node',
             output='screen',
-            arguments=['--ros-args', '--log-level', 'DEBUG'],
             parameters=[os.path.join(
                 pkg_turtlebot3_gazebo, 'config', 'ekf_tb3_1.yaml'),
                 {'use_sim_time': use_sim_time}
@@ -106,17 +105,7 @@ def generate_launch_description():
                 'robot_namespace': TextSubstitution(text='tb3_1'),
                 'robot_name': TextSubstitution(text='tb3_1')
             }.items()
-        ),
-
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(pkg_turtlebot3_gazebo, 'launch', 'multirobot_mapping_slam.launch.py'),
-            ),
-            launch_arguments={
-                'use_sim_time': use_sim_time,
-                'namespace': 'tb3_1'
-            }.items()
-)
+        )
     
     ])
 
@@ -173,22 +162,8 @@ def generate_launch_description():
         parameters=[
             {'use_sim_time': True},
         ]
-        ),
-        
-        
-        # Create a common world frame
-        Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'tb3_1/map', 'tb3_1/odom'],
-            output='screen'
-        ),
-        Node(
-            package='tf2_ros',
-            executable='static_transform_publisher',
-            arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'tb3_2/map', 'tb3_2/odom'],
-            output='screen'
         )
+
     ])
     
 
@@ -198,7 +173,7 @@ def generate_launch_description():
     ld.add_action(gazebo_cmd)
     ld.add_action(odom_bridges)
     ld.add_action(tb3_1)
-    #ld.add_action(tb3_2)
+    ld.add_action(tb3_2)
     #ld.add_action(rviz_node)
     
     return ld
