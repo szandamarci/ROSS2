@@ -112,6 +112,8 @@ def generate_launch_description():
         output='screen',
         namespace=name_1,
         remappings=[
+            ("/scan", "scan"),
+            ("/odom", "odom"),
             ("/map", "map"),
             ("/map_metadata", "map_metadata"),
             ("/slam_toolbox/scan_visualization", "slam_toolbox/scan_visualization"),
@@ -155,6 +157,8 @@ def generate_launch_description():
         output='screen',
         namespace=name_2,
         remappings=[
+            ("/scan", "scan"),
+            ("/odom", "odom"),
             ("/map", "map"),
             ("/map_metadata", "map_metadata"),
             ("/slam_toolbox/scan_visualization", "slam_toolbox/scan_visualization"),
