@@ -13,7 +13,7 @@ This implementation demonstrates core principles of:
 - Real-time map generation
 
 ## YouTube video:
-<a href="https://youtu.be/Exqm_VrOytY"><img width="600" src="./assets/banana.png"></a>
+<a href="[https://youtu.be/Exqm_VrOytY](https://www.youtube.com/watch?v=4FqYeCSiaWE&ab_channel=ViktorCs%C3%A1ji)"><img width="600" src="./assets/banana.png"></a>
 
 ## Overview
 This project implements a multi-robot SLAM (Simultaneous Localization and Mapping) system using ROS2 Jazzy and the Gazebosimulation platform. The environment simulates two autonomous robots navigating in the same world, each running its own SLAM process, while building and updating a map in real time.
