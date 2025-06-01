@@ -1,10 +1,7 @@
 [//]: # (Image References)
 
-[image1]: ./assets/two_robots.png "picture of two robots"
-[image2]: ./assets/merged_map.png "picture of two maps merged"
-
-
-## Table of contents
+[image1]: ./assets/two_robots.jfif "picture of two robots"
+[image2]: ./assets/merged_map.jfif "picture of two maps merged"
 
 # Multi-Robot SLAM Navigation with ROS2
 This project presents a multi-robot Simultaneous Localization and Mapping (SLAM) system, implemented using the Robot Operating System 2 (ROS2) and Gazebo simulation environment. The system involves two mobile robots that operate in a shared simulated world, where they independently and simultaneously perform mapping and localization tasks
@@ -95,7 +92,6 @@ Namespaces are used to avoid topic collisions of multiple instances of the same 
 The `spawn_robot.launch.py` file is responsible for spawning the two uniquely named robots in a Gazebo world. It also starts publishing their states and localization data, and bridges essential Gazebo simulation data (including camera feeds).
 The two robots are spawned with the `spawn_urdf_node_1` and `spawn_urdf_node_1` nodes, which use the `\create` service of the `ros_gz_sim` package. Initial positions are determined by launch arguments for `x` and `y`.
 
-*picture of two robots*
 ![alt text][image1]
 
 Each robot gets its own `robot_state_publisher` node under their unique namespace, which publishes TFs for the robot's joints and links using its URDF.
@@ -118,7 +114,7 @@ The merged map can be exported with the following command:
 ros2 run nav2_map_server map_saver_cli -f my_map
 ```
 The following .pgm file produced by the above command is seen here:
-*Pic of map*
+
 ![alt text][image2]
 
 
